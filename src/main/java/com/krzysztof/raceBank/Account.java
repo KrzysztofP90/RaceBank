@@ -11,4 +11,12 @@ public class Account {
         this.num = num;
         this.balance = balance;
     }
+
+    public int getNum() {
+        return num;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
 }
