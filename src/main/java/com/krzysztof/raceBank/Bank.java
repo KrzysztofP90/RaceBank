@@ -23,4 +23,19 @@ public class Bank {
         }
         return balance;
     }
+
+    public BigDecimal getAccountBalance(int accountNumber) {
+        return this.accounts.get(accountNumber).getBalance();
+    }
+
+    public void add10AccountsWith10000BalanceToBank() {
+        for (int i = 0; i < 10; i++) {
+            this.addAccount(new Account(i, new BigDecimal(10000)));
+        }
+    }
+
+    public void transfer(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+        this.accounts.get(fromAccountNumber).setBalance(this.accounts.get(fromAccountNumber).getBalance().add(amount.negate()));
+        this.accounts.get(toAccountNumber).setBalance(this.accounts.get(toAccountNumber).getBalance().add(amount));
+    }
 }
