@@ -2,8 +2,6 @@ package com.krzysztof.raceBank;
 
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 public class App
@@ -15,7 +13,7 @@ public class App
         long start = System.currentTimeMillis();
         Random random = new Random();
         for (int i = 0; i < 2000; i++) {
-            bank.executeSynchronizedTransferInSeparateThread(
+            bank.excecuteTransferInMainThread(
                     random.nextInt(10), random.nextInt(10), new BigDecimal(random.nextInt(1000)));
             System.out.println(bank.getAllBalance());
         }

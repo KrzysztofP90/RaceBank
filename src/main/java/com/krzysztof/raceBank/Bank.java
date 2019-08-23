@@ -34,6 +34,10 @@ public class Bank {
         }
     }
 
+    public void excecuteTransferInMainThread(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+        this.unsynchronizedTransfer(fromAccountNumber, toAccountNumber, amount);
+    }
+
     public void executeUnsynchronizedTransferInSeparateThread(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
         new Thread( ()-> unsynchronizedTransfer(fromAccountNumber, toAccountNumber, amount)).start();
     }
