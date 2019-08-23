@@ -35,11 +35,28 @@ public class Bank {
     }
 
     public void executeUnsynchronizedTransferInSeparateThread(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
-        new Thread( ()-> transfer(fromAccountNumber, toAccountNumber, amount)).start();
+        new Thread( ()-> unsynchronizedTransfer(fromAccountNumber, toAccountNumber, amount)).start();
     }
 
-    private void transfer(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
-        this.accounts.get(fromAccountNumber).setBalance(this.accounts.get(fromAccountNumber).getBalance().add(amount.negate()));
-        this.accounts.get(toAccountNumber).setBalance(this.accounts.get(toAccountNumber).getBalance().add(amount));
+    public void executeSynchronizedTransferInSeparateThread(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+        new Thread( ()-> synchronizedTransfer(fromAccountNumber, toAccountNumber, amount)).start();
+    }
+
+    private void synchronizedTransfer(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+        synchronized (this.accounts.get(fromAccountNumber)) {
+            this.accounts.get(fromAccountNumber).setBalance(this.accounts.get(fromAccountNumber).getBalance().
+                    add(amount.negate()));
+        }
+        synchronized (this.accounts.get(toAccountNumber)) {
+            this.accounts.get(toAccountNumber).setBalance(this.accounts.get(toAccountNumber).getBalance().
+                    add(amount));
+        }
+    }
+
+    private void unsynchronizedTransfer(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+        this.accounts.get(fromAccountNumber).setBalance(this.accounts.get(fromAccountNumber).getBalance().
+                add(amount.negate()));
+        this.accounts.get(toAccountNumber).setBalance(this.accounts.get(toAccountNumber).getBalance().
+                add(amount));
     }
 }
