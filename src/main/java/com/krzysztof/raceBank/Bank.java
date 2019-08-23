@@ -34,7 +34,11 @@ public class Bank {
         }
     }
 
-    public void transfer(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+    public void executeUnsynchronizedTransferInSeparateThread(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
+        new Thread( ()-> transfer(fromAccountNumber, toAccountNumber, amount)).start();
+    }
+
+    private void transfer(int fromAccountNumber, int toAccountNumber, BigDecimal amount) {
         this.accounts.get(fromAccountNumber).setBalance(this.accounts.get(fromAccountNumber).getBalance().add(amount.negate()));
         this.accounts.get(toAccountNumber).setBalance(this.accounts.get(toAccountNumber).getBalance().add(amount));
     }

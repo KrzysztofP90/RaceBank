@@ -2,6 +2,9 @@ package com.krzysztof.raceBank;
 
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 public class App
 {
@@ -9,12 +12,16 @@ public class App
     {
         Bank bank = new Bank();
         bank.add10AccountsWith10000BalanceToBank();
-        System.out.println(bank.getAllBalance());
-        bank.transfer(0,1,new BigDecimal(10000));
-        System.out.println(bank.getAccountBalance(1));
-        System.out.println(bank.getAccountBalance(0));
-
-
+        long start = System.currentTimeMillis();
+        Random random = new Random();
+        for (int i = 0; i < 2000; i++) {
+            bank.executeUnsynchronizedTransferInSeparateThread(
+                    random.nextInt(10), random.nextInt(10), new BigDecimal(random.nextInt(1000)));
+            System.out.println(bank.getAllBalance());
+        }
+        long end = System.currentTimeMillis();
+        double timeInSec = (double) (end - start) / (double) 1000;
+        System.out.println("Time of operations:" + timeInSec + " second");
     }
 
 
